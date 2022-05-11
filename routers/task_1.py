@@ -1,18 +1,19 @@
 from fastapi import APIRouter, Request, Response
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-import datetime
+from datetime import date
+
 
 router = APIRouter()
 
 router.counter = 0
 
-#
-# class Event(BaseModel):
-#     id: int = 0
-#     date: datetime
-#     name: str
-#     date_added: datetime = datetime.date.today()
+
+class Event(BaseModel):
+    id: int = router.counter
+    date: date
+    name: str
+    date_added: date = date.today()
 
 
 @router.get("/", status_code=200)
@@ -36,9 +37,15 @@ def day(response: Response, name: str, number: int):
     else:
         response.status_code = 400
 
-# @router.put("/events", status_code=200)
-# async def events(event: Event):
-#     update_event = jsonable_encoder(event)
-#     update_event["id"] = router.counter
-#     router.counter += 1
-#     return update_event
+@router.put("/events", status_code=201)
+async def events(event: Event):
+    update_event = jsonable_encoder(event)
+    update_event["id"] = router.counter
+    router.counter += 1
+    return update_event
+
+# @router.get("/event/{date}")
+# async def events_by_date(date: date):
+#     events = Event(date=date)
+#     # update_event = jsonable_encoder(events)
+#     return {"events": events}
