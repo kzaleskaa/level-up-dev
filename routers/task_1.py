@@ -43,9 +43,6 @@ def day(response: Response, name: str, number: int):
 
 @router.put("/events", status_code=200, response_model=NewEvent)
 def events(event_item: Event):
-    # print(event_item)
-    # event_item = event_item.json()
-    # print(event_item["date"])
     if bool(datetime.strptime(str(event_item.date), "%Y-%m-%d")):
         router.counter += 1
 
@@ -58,13 +55,14 @@ def events(event_item: Event):
 
 @router.get("/events/{event_date}", status_code=200, response_model=List[NewEvent])
 def get_event_by_date(event_date: date, response: Response):
+    events_list = []
 
     if bool(datetime.strptime(str(event_date), "%Y-%m-%d")):
         events_list = [event for event in router.data if event.date == str(event_date)]
 
-        if events_list:
-            return events_list
-        else:
+        if len(events_list) == 0:
             response.status_code = 404
     else:
         response.status_code = 400
+
+    return events_list
