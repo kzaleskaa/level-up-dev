@@ -62,3 +62,8 @@ def test_task_5():
     assert retrieve_response.status_code == 200
 
     assert retrieve_response.json()[0]["name"] == "Drugi dzień wiosny"
+
+def test_task_5_incorrect():
+    response = client.get("/events/2022-13-22")
+
+    assert response.status_code == 400
