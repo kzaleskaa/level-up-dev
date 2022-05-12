@@ -57,7 +57,7 @@ def test_task_5():
 
     assert response.status_code == 200
 
-    retrieve_response = client.get("/event/2022-03-22")
+    retrieve_response = client.get("/events/2022-03-22")
 
     assert retrieve_response.status_code == 200
 
