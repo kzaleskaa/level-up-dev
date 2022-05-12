@@ -53,7 +53,7 @@ def test_task_4():
     }
 
 def test_task_5():
-    response = client.put("/events", json={"date": "2021-01-01", "event": "Event"})
+    response = client.put("/events", json={"date": "2021-11-11", "event": "Event"})
 
     assert response.status_code == 200
 

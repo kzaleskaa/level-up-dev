@@ -3,13 +3,15 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import date
 from typing import List
+import datetime
+from datetime import datetime
 
 router = APIRouter()
 router.counter = 0
 router.data = []
 
 class Event(BaseModel):
-    date: date
+    date: str
     event: str
 
 class NewEvent(BaseModel):
@@ -41,12 +43,24 @@ def day(response: Response, name: str, number: int):
 
 @router.put("/events", status_code=200, response_model=NewEvent)
 def events(event_item: Event):
-    router.counter += 1
-    new_event = NewEvent(id=router.counter, name=event_item.event, date=str(event_item.date), date_added=str(date.today()))
-    router.data.append(new_event)
-    return new_event
+    if bool(datetime.strptime(str(event_date), "%Y-%m-%d")):
+        router.counter += 1
+
+        new_event = NewEvent(id=router.counter, name=event_item.event, date=str(event_item.date), date_added=str(date.today()))
+        router.data.append(new_event)
+
+        return new_event
+    else:
+        response.status_code = 400
 
 @router.get("/event/{event_date}", status_code=200, response_model=List[NewEvent])
-def get_event_by_date(event_date: date):
-    events_list = [event for event in router.data if event.date == str(event_date)]
-    return events_list
+def get_event_by_date(event_date: date, response: Response):
+    if bool(datetime.strptime(str(event_date), "%Y-%m-%d")):
+        events_list = [event for event in router.data if event.date == str(event_date)]
+
+        if events_list:
+            return events_list
+        else:
+            response.status_code = 404
+    else:
+        response.status_code = 400
