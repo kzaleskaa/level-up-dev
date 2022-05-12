@@ -8,7 +8,7 @@ client = TestClient(app)
 def test_task_1():
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"start": "1970-01-0"}
+    assert response.json() == {"start": "1970-01-01"}
 
 def test_task_2_get():
     response = client.get("/method")
@@ -39,7 +39,7 @@ def test_task_3_incorrect():
     assert response.status_code == 400
 
 def test_task_4():
-    response = client.put("/events", json={"date": "2021-01-01", "event": "Event name"})
+    response = client.put("/events", json={"date": "2022-03-01", "event": "Dzień Balearów"})
 
     response_data = response.json()
 
@@ -48,17 +48,17 @@ def test_task_4():
 
     assert response.status_code == 200
     assert response_data == {
-        "name": "Event name",
-        "date": "2021-01-01"
+        "name": "Dzień Balearów",
+        "date": "2022-03-01"
     }
 
 def test_task_5():
-    response = client.put("/events", json={"date": "2021-11-11", "event": "Event"})
+    response = client.put("/events", json={"date": "2022-03-22", "event": "Drugi dzień wiosny"})
 
     assert response.status_code == 200
 
-    retrieve_response = client.get("/event/2021-01-01")
+    retrieve_response = client.get("/event/2022-03-22")
 
     assert retrieve_response.status_code == 200
 
-    assert retrieve_response.json()[0]["name"] == "Event name"
+    assert retrieve_response.json()[0]["name"] == "Drugi dzień wiosny"

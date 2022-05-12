@@ -22,7 +22,7 @@ class NewEvent(BaseModel):
 
 @router.get("/", status_code=200)
 def root():
-    return {"start": "1970-01-0"}
+    return {"start": "1970-01-01"}
 
 @router.api_route("/method", methods=["GET", "PUT", "OPTIONS", "DELETE", "POST"])
 def method(response: Response, request: Request):
@@ -43,7 +43,10 @@ def day(response: Response, name: str, number: int):
 
 @router.put("/events", status_code=200, response_model=NewEvent)
 def events(event_item: Event):
-    if bool(datetime.strptime(str(event_date), "%Y-%m-%d")):
+    # print(event_item)
+    # event_item = event_item.json()
+    # print(event_item["date"])
+    if bool(datetime.strptime(str(event_item.date), "%Y-%m-%d")):
         router.counter += 1
 
         new_event = NewEvent(id=router.counter, name=event_item.event, date=str(event_item.date), date_added=str(date.today()))
@@ -55,6 +58,7 @@ def events(event_item: Event):
 
 @router.get("/event/{event_date}", status_code=200, response_model=List[NewEvent])
 def get_event_by_date(event_date: date, response: Response):
+
     if bool(datetime.strptime(str(event_date), "%Y-%m-%d")):
         events_list = [event for event in router.data if event.date == str(event_date)]
 
@@ -63,4 +67,4 @@ def get_event_by_date(event_date: date, response: Response):
         else:
             response.status_code = 404
     else:
-        response.status_code = 40
+        response.status_code = 400
