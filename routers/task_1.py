@@ -63,4 +63,4 @@ def get_event_by_date(event_date: date, response: Response):
         else:
             response.status_code = 404
     else:
-        response.status_code = 400
+        response.status_code = 40
