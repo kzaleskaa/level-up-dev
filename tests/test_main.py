@@ -36,4 +36,18 @@ def test_task_3_correct():
 
 def test_task_3_incorrect():
     response = client.get("/day?name=tuesday&number=3")
-    assert  response.status_code == 400
+    assert response.status_code == 400
+
+def test_task_4():
+    response = client.put("/events", json={"date": "2021-01-01", "name": "Event name"})
+
+    response_data = response.json()
+
+    del response_data["id"]
+    del response_data["date_added"]
+
+    assert response.status_code == 200
+    assert response_data == {
+        "name": "Event name",
+        "date": "2021-01-01"
+    }
