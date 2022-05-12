@@ -56,10 +56,9 @@ def events(event_item: Event):
 @router.get("/events/{event_date}", status_code=200, response_model=List[NewEvent])
 def get_event_by_date(event_date: str, response: Response):
     events_list = []
-    format = "%Y-%m-%d"
 
     try:
-        res = bool(datetime.strptime(event_date, format))
+        res = bool(datetime.strptime(event_date, "%Y-%m-%d"))
         events_list = [event for event in router.data if event.date == str(event_date)]
         response.status_code = 200
         if len(events_list) == 0:
