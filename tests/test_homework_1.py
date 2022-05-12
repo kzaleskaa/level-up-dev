@@ -39,7 +39,7 @@ def test_task_3_incorrect():
     assert response.status_code == 400
 
 def test_task_4():
-    response = client.put("/events", json={"date": "2021-01-01", "name": "Event name"})
+    response = client.put("/events", json={"date": "2021-01-01", "event": "Event name"})
 
     response_data = response.json()
 
@@ -51,3 +51,14 @@ def test_task_4():
         "name": "Event name",
         "date": "2021-01-01"
     }
+
+def test_task_5():
+    response = client.put("/events", json={"date": "2021-01-01", "event": "Event"})
+
+    assert response.status_code == 200
+
+    retrieve_response = client.get("/event/2021-01-01")
+
+    assert retrieve_response.status_code == 200
+
+    assert retrieve_response.json()[0]["name"] == "Event name"
