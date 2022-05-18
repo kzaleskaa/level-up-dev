@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Response
+from fastapi import APIRouter, Request, Response, status
 from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import date
@@ -36,8 +36,11 @@ def method(response: Response, request: Request):
 def day(response: Response, name: str, number: int):
     days = {1: "monday", 2: "tuesday", 3: "wednesday", 4: "thursday", 5: "friday", 6: "saturday", 7: "sunday"}
 
-    if days[number] == name.lower():
-        response.status_code = 200
+    if number in days:
+        if days[number] == name.lower():
+            response.status_code = 200
+        else:
+            response.status_code = 400
     else:
         response.status_code = 400
 
@@ -60,9 +63,10 @@ def get_event_by_date(event_date: str, response: Response):
     try:
         res = bool(datetime.strptime(event_date, "%Y-%m-%d"))
         events_list = [event for event in router.data if event.date == str(event_date)]
-        response.status_code = 200
+
         if len(events_list) == 0:
             response.status_code = 404
+
     except ValueError:
         response.status_code = 400
 

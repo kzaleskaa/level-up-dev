@@ -29,7 +29,7 @@ def test_task_2_post():
     response = client.post("/method")
     assert response.status_code == 201
     assert response.json() == {"method": "POST"}
-    
+
 def test_task_3_correct():
     response = client.get("/day?name=monday&number=1")
     assert  response.status_code == 200
