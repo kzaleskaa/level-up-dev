@@ -79,3 +79,7 @@ def test_task_3_5_delete_path():
     response_get = client.get("save/add_path", allow_redirects=False)
     assert response_get.status_code == 404
 
+
+def test_task_3_5_patch():
+    response_patch = client.patch("save/add_path")
+    assert response_patch.status_code == 400
