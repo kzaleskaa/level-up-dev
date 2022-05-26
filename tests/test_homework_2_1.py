@@ -2,6 +2,7 @@ import unittest
 
 from decorators.decorators_task import greeter
 
+
 class TaskFirstUnitTest(unittest.TestCase):
     @greeter
     def first_func(self):
@@ -16,6 +17,7 @@ class TaskFirstUnitTest(unittest.TestCase):
 
     def test_second_func(self):
         assert self.second_func() == "Aloha New User"
+
 
 if __name__ == '__main__':
     unittest.main()

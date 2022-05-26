@@ -1,3 +1,4 @@
+# 2.1
 def greeter(func):
     def aloha(*args, **kwargs):
         name = func(*args, **kwargs)
@@ -5,6 +6,8 @@ def greeter(func):
         return welcome_text
     return aloha
 
+
+# 2.2
 def sums_of_str_elements_are_equal(func):
     def numbers_sum(*args, **kwargs):
         def digits_sum(number):
@@ -30,6 +33,7 @@ def sums_of_str_elements_are_equal(func):
     return numbers_sum
 
 
+# 2.3
 def format_output(*required_keys):
     def make_dict(func):
         def wrapper(*args, **kwargs):
@@ -54,6 +58,7 @@ def format_output(*required_keys):
     return make_dict
 
 
+# 2.4
 def add_method_to_instance(klass):
     def outer_wrapper(func):
         def wrapper(*args, **kwargs):

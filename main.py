@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from routers.router import router
+from routers import router, fast
 
 app = FastAPI()
 
-app.include_router(router)
+app.include_router(router.router, tags=["task-1"])
+app.include_router(fast.router, tags=["task-3"])

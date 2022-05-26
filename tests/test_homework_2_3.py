@@ -2,6 +2,7 @@ import unittest
 
 from decorators.decorators_task import format_output
 
+
 class TaskFirstUnitTest(unittest.TestCase):
     @format_output("first_name__last_name")
     def first_func(self):

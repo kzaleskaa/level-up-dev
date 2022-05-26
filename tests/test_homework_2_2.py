@@ -2,6 +2,7 @@ import unittest
 
 from decorators.decorators_task import sums_of_str_elements_are_equal
 
+
 class TaskThirdUnitTest(unittest.TestCase):
     @sums_of_str_elements_are_equal
     def calculate_first(self):

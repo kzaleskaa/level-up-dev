@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Request, Response, status
-from fastapi import FastAPI
+from fastapi import APIRouter, Request, Response
 from pydantic import BaseModel
 from datetime import date
 from typing import List
@@ -10,9 +9,11 @@ router = APIRouter()
 router.counter = 0
 router.data = []
 
+
 class Event(BaseModel):
     date: str
     event: str
+
 
 class NewEvent(BaseModel):
     id: int
@@ -20,10 +21,14 @@ class NewEvent(BaseModel):
     date: str
     date_added: str
 
+
+# 1.1
 @router.get("/", status_code=200)
 def root():
     return {"start": "1970-01-01"}
 
+
+# 1.2
 @router.api_route("/method", methods=["GET", "PUT", "OPTIONS", "DELETE", "POST"])
 def method(response: Response, request: Request):
     if request.method == "POST":
@@ -32,6 +37,8 @@ def method(response: Response, request: Request):
         response.status_code = 200
     return {"method": request.method}
 
+
+# 1.3
 @router.get("/day", status_code=200)
 def day(response: Response, name: str, number: int):
     days = {1: "monday", 2: "tuesday", 3: "wednesday", 4: "thursday", 5: "friday", 6: "saturday", 7: "sunday"}
@@ -44,8 +51,10 @@ def day(response: Response, name: str, number: int):
     else:
         response.status_code = 400
 
+
+# 1.4
 @router.put("/events", status_code=200, response_model=NewEvent)
-def events(event_item: Event):
+def events(response: Response, event_item: Event):
     if bool(datetime.strptime(str(event_item.date), "%Y-%m-%d")):
         router.counter += 1
 
@@ -56,6 +65,8 @@ def events(event_item: Event):
     else:
         response.status_code = 400
 
+
+# 1.5
 @router.get("/events/{event_date}", status_code=200, response_model=List[NewEvent])
 def get_event_by_date(event_date: str, response: Response):
     events_list = []
