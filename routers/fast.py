@@ -1,6 +1,7 @@
 from fastapi import Depends, APIRouter, Query, Response, Header, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from requests.auth import HTTPBasicAuth
 from fastapi.responses import JSONResponse
 from _datetime import datetime
 from datetime import date
@@ -34,7 +35,7 @@ def check_user(response: Response, credentials: HTTPBasicCredentials = Depends(s
     username = credentials.username
     password = credentials.password
 
-    today_date = date.today().strftime("%Y-%m-%d")
+    today_date = date.today()
     birth_date = datetime.strptime(password, "%Y-%m-%d").date()
 
     age = today_date.year - birth_date.year - ((today_date.month, today_date.day) < (birth_date.month, birth_date.day))
@@ -48,10 +49,10 @@ def check_user(response: Response, credentials: HTTPBasicCredentials = Depends(s
 
 # 3.3
 @router.get("/info")
-def format_response(response: Response, f: str = Query(None), user_agent: str | None = Header(default=None)):
-    if f == "json":
+def format_response(response: Response, format: str = Query(None), user_agent: str | None = Header(default=None)):
+    if format == "json":
         return JSONResponse(content={"user_agent": user_agent}, status_code=status.HTTP_200_OK)
-    elif f == "html":
+    elif format == "html":
         html_content = f"""<input type="text" id=user-agent name=agent value="{user_agent}">"""
         return HTMLResponse(content=html_content, status_code=status.HTTP_200_OK)
     else:
@@ -60,11 +61,13 @@ def format_response(response: Response, f: str = Query(None), user_agent: str | 
 
 
 # 3.4
-@router.put("/save/{sting_path}")
+@router.put("/save/{string_path}")
 def save_new_path(response: Response, string_path: str):
     if string_path not in router.used_paths:
         router.used_paths.append(string_path)
         response.status_code = status.HTTP_200_OK
+    else:
+        response.status_code = status.HTTP_400_BAD_REQUEST
 
 
 @router.get("/save/{string_path}")
