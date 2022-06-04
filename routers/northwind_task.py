@@ -64,9 +64,7 @@ async def put_customer(response: Response, supplier_id: int, customer: schemas.S
         raise HTTPException(status_code=404, detail="Supplier not found")
 
     crud.change_existing_supplier(db, supplier_id, customer)
-    response.status_code = 200
     db_supplier = crud.get_supplier(db, supplier_id)
-
     return db_supplier
 
 

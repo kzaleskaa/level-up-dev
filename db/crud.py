@@ -66,10 +66,11 @@ def change_existing_supplier(db: Session, supplier_id: int, customer: schemas.Su
     # remove given None values from json object
     values_to_change = {key: value for key, value in dict(customer).items() if value is not None}
 
-    db.query(models.Supplier).filter(
-        models.Supplier.SupplierID == supplier_id
-    ).update(values=values_to_change)
-    db.commit()
+    if values_to_change:
+        db.query(models.Supplier).filter(
+            models.Supplier.SupplierID == supplier_id
+        ).update(values=values_to_change)
+        db.commit()
 
 
 # 5.5
