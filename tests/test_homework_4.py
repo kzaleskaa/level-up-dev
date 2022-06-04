@@ -1,5 +1,4 @@
 from fastapi.testclient import TestClient
-
 from main import app
 
 client = TestClient(app)
@@ -164,6 +163,22 @@ def test_task_4_5_delete_supplier():
 
     response_get = client.get(f"/suppliers/{new_supplier_id}")
     assert response_get.status_code == 404
+
+
+def test_task_4_4_empty():
+    input_data = {
+        "CompanyName": "Test Company Name",
+    }
+    response = client.post("/suppliers", json=input_data)
+    response_json = response.json()
+    new_supplier_id = response_json["SupplierID"]
+
+    output_data = {}
+    response_put = client.put(f"/suppliers/{new_supplier_id}", json=output_data)
+    response_put_json = response_put.json()
+
+    assert response_put.status_code == 200
+    assert response_put_json.get("CompanyName") == input_data["CompanyName"]
 
 
 def test_task_4_5_no_exist():

@@ -22,9 +22,7 @@ def get_suppliers(db: Session):
 
 
 def get_supplier(db: Session, supplier_id: int):
-    return (
-        db.query(models.Supplier).filter(models.Supplier.SupplierID == supplier_id).first()
-    )
+    return db.query(models.Supplier).filter(models.Supplier.SupplierID == supplier_id).first()
 
 
 # 5.2

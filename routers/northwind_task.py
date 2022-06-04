@@ -1,10 +1,8 @@
-import sqlite3
 from typing import List
-from sqlalchemy.sql.expression import func
 from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import PositiveInt
 from sqlalchemy.orm import Session
-from db import crud, schemas, models
+from db import crud, schemas
 from db.database import get_db
 
 router = APIRouter()
@@ -65,6 +63,7 @@ async def put_customer(response: Response, supplier_id: int, customer: schemas.S
 
     crud.change_existing_supplier(db, supplier_id, customer)
     db_supplier = crud.get_supplier(db, supplier_id)
+
     return db_supplier
 
 
