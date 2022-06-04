@@ -1,6 +1,5 @@
 from fastapi.testclient import TestClient
 from requests.auth import HTTPBasicAuth
-import json
 
 from main import app
 
