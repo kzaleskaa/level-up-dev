@@ -41,5 +41,6 @@ class TaskFirstUnitTest(unittest.TestCase):
             "city": "Empty value"
         }
 
+
 if __name__ == '__main__':
     unittest.main()

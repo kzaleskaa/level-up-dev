@@ -1,5 +1,7 @@
-from sqlalchemy.orm import Session
+import json
 
+from sqlalchemy.orm import Session
+from sqlalchemy import func
 from . import models
 from . import schemas
 
@@ -14,6 +16,7 @@ def get_shipper(db: Session, shipper_id: int):
     )
 
 
+# 5.1
 def get_suppliers(db: Session):
     return db.query(models.Supplier).all()
 
@@ -24,6 +27,7 @@ def get_supplier(db: Session, supplier_id: int):
     )
 
 
+# 5.2
 def supplier_products(db: Session, supplier_id):
     return (
         db.query(
@@ -41,19 +45,34 @@ def supplier_products(db: Session, supplier_id):
     )
 
 
+# 5.3
+def get_new_supplier_id(db: Session):
+    row = db.query(func.max(models.Supplier.SupplierID)).first()
+    new_id = row[0] + 1
+    return new_id
+
+
 def create_new_supplier(db: Session, supplier: schemas.SupplierPost):
-    new_supplier = models.Supplier(**dict(supplier))
+    # **obj will unpack your dict object
+    # User(**obj) will do like User(id=1, name='Awesome')
+    dict_obj_supplier = dict(supplier)
+    new_supplier = models.Supplier(**dict_obj_supplier)
     db.add(new_supplier)
     db.commit()
 
 
-def change_existing_supplier(db: Session, supplier_id: int, changes: schemas.SupplierChanges):
+# 5.4
+def change_existing_supplier(db: Session, supplier_id: int, customer: schemas.SupplierChanges):
+    # remove given None values from json object
+    values_to_change = {key: value for key, value in dict(customer).items() if value is not None}
+
     db.query(models.Supplier).filter(
         models.Supplier.SupplierID == supplier_id
-    ).update(values={"CompanyName": changes.CompanyName, "ContactName": changes.ContactName})
+    ).update(values=values_to_change)
     db.commit()
 
 
+# 5.5
 def delete_existing_supplier(db: Session, supplier_id: int):
     db.query(models.Supplier).filter(
         models.Supplier.SupplierID == supplier_id
