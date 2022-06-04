@@ -121,11 +121,11 @@ def test_task_4_3_create_new_supplier_input():
     response = client.post("/suppliers", json=input_data)
     response_json = response.json()
 
-    assert response.status_code == 200
+    assert response.status_code == 201
 
     assert type(response_json["SupplierID"]) == int
 
-    assert response_json["CompanyName"] == "Test Company Name"
+    assert response_json["CompanyName"] == input_data["CompanyName"]
 
     assert response_json["Phone"] is None
     assert response_json["Fax"] is None
@@ -140,7 +140,7 @@ def test_task_4_4_update_supplier_info():
     response_json = response.json()
 
     assert response.status_code == 200
-    assert response_json["CompanyName"] == "Test Company Name"
+    assert response_json["CompanyName"] == input_data["CompanyName"]
     assert response_json["SupplierID"] == 1
 
 

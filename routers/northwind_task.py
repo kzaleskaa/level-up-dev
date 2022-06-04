@@ -45,7 +45,7 @@ async def get_supplier_products(supplier_id: PositiveInt, db: Session = Depends(
 
 
 # 5.3
-@router.post("/suppliers", response_model=schemas.Supplier, status_code=200)
+@router.post("/suppliers", response_model=schemas.Supplier, status_code=201)
 async def customer_add(supplier: schemas.SupplierPost, db: Session = Depends(get_db)):
     if supplier.SupplierID is None:
         new_supplier_id = crud.get_new_supplier_id(db)
