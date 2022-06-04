@@ -83,7 +83,7 @@ async def get_supplier_products(supplier_id: PositiveInt, db: Session = Depends(
 
 
 # 5.3
-@router.post("/suppliers", response_model=schemas.Supplier)
+@router.post("/suppliers", response_model=schemas.Supplier, status_code=200)
 async def customer_add(supplier: schemas.SupplierPost, db: Session = Depends(get_db)):
     router.db_connection.row_factory = sqlite3.Row
     if supplier.SupplierID is None:

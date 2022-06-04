@@ -56,6 +56,6 @@ def change_existing_supplier(db: Session, supplier_id: int, changes: schemas.Sup
 
 def delete_existing_supplier(db: Session, supplier_id: int):
     db.query(models.Supplier).filter(
-        models.Supplier == supplier_id
+        models.Supplier.SupplierID == supplier_id
     ).delete()
     db.commit()
